@@ -1,0 +1,8 @@
+node_modules/
+web/
+mongo/database/
+config.js
+package-lock.json
+.eslintrc.*
+.DS_Store
+.env
