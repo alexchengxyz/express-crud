@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './db/connect.js';
 import tasks from './routes/tasks.js';
 import notFound  from './middleware/not-found.js';
+import errorHandler from  './middleware/error-handler.js';
 
 /*
   *參考
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use('/api/v1/tasks', tasks);
 
 app.use(notFound);
+app.use(errorHandler);
 
 connectDB(process.env.MONGO_URI);
 
