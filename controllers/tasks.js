@@ -13,14 +13,12 @@ const getAllTasks = asyncWrapper(async (req, res) => {
 // 取得單筆資料
 const getTask = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
+
   const ret = await Task.findOne({ _id: id });
 
-  console.log('===>', ret)
-
-  // if (!ret) {
-  //   return next(customError(`找不到此ID : ${id}`, 404))
-  //   // res.status(404).json({ message: `找不到此ID : ${id}` });
-  // }
+  if (!ret) {
+    return next(customError(`找不到此ID : ${id}`, 404))
+  }
 
   res.status(200).json({ result: 'ok', ret });
 });
@@ -36,13 +34,13 @@ const addTask = asyncWrapper(async (req, res) => {
   res.status(201).json({ result: 'ok', ret });
 })
 
-// 移除單筆資料
+// 更新單筆資料
 const updateTask = asyncWrapper(async (req, res, next) => {
     const { id } = req.params;
 
-    const ret = await Task.findOneAndUpdate({ _id: id }, req.body, {
-      new: true,
-      runValidators: true,
+    const ret = await Task.findOneAndUpdate({ _id: id.trim() }, req.body, {
+      new: true, // 返回結果
+      runValidators: true, // 驗證格式
     });
 
     if (!ret) {
@@ -52,17 +50,15 @@ const updateTask = asyncWrapper(async (req, res, next) => {
     res.status(200).json({ result: 'ok', ret });
 });
 
+// 移除單筆資料
 const deleteTask = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
 
   const ret = await Task.findOneAndDelete({ _id: id });
-  console.log(ret)
 
-  // if (!ret) {
-  //   console.log(555)
-  //   return next(customError(`No task with id : ${id}`, 404))
-  //   res.status(404).json({ message: `找不到此ID` });
-  // }
+  if (!ret) {
+    return next(customError(`找不到此ID : ${id}`, 404))
+  }
 
   res.status(200).json({ result: 'ok' });
 });

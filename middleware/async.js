@@ -1,10 +1,10 @@
 const asyncWrapper = (fn) => (async (req, res, next) => {
-    try {
+  try {
       await fn(req, res, next)
-    } catch (error) {
-      console.log('==>',error)
-      next(error)
     }
+  catch (error) {
+    next(error)
+  }
   }
 );
 
